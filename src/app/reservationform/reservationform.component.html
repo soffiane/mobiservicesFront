@@ -1,0 +1,35 @@
+<form [formGroup]="reservationForm" (ngSubmit)="createOrUpdateReservation()">
+<p>
+  <mat-form-field>
+    <mat-label>Trajet</mat-label>
+    <!-- <ng-container *ngIf="buses | async as busList"> -->
+      <mat-select formControlName="bus">
+        <mat-option *ngFor="let bus of buses | async" [value]="bus">
+          {{bus}}
+        </mat-option>
+      </mat-select>
+   <!-- </ng-container> -->
+  </mat-form-field>
+</p>
+<p>
+  <mat-form-field>
+    <mat-label>Date de reservation</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="reservationDate" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+</p>
+
+<mat-form-field>
+  <mat-label>Client</mat-label>
+  <input matInput formControlName="client" />
+</mat-form-field>
+
+<p>
+<button mat-button color=primary type="submit" [disabled]="reservationForm.invalid || reservationForm.pristine">Creer reservation</button>
+</p>
+
+<button mat-button color=primary  routerLink='/reservation-list'>Annuler</button>
+
+
+</form>
