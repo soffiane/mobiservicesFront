@@ -13,7 +13,6 @@
       <th>Date de réservation</th>
       <th>Client</th>
       <th>Bus</th>
-      <th>Nombre de places</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +20,7 @@
       <td>{{ reservation.id }}</td>
       <td>{{ reservation.reservationDate }}</td>
       <td>{{ reservation.client.name }}</td>
-      <td>{{ reservation.bus.route }}</td>
+      <td *ngFor="let bus of reservation.buses">{{ bus.id }}</td>
       <span>
         <a mat-icon-button matTooltip="modifier" [routerLink]="['/reservation-add',reservation.id]">
           <mat-icon>edit</mat-icon>

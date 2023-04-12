@@ -3,9 +3,9 @@
   <mat-form-field>
     <mat-label>Trajet</mat-label>
     <!-- <ng-container *ngIf="buses | async as busList"> -->
-      <mat-select formControlName="bus">
-        <mat-option *ngFor="let bus of buses | async" [value]="bus">
-          {{bus}}
+      <mat-select formControlName="buses">
+        <mat-option *ngFor="let bus of allBuses | async" [value]="bus">
+          {{bus.route}} {{bus.departureTime}}
         </mat-option>
       </mat-select>
    <!-- </ng-container> -->
@@ -22,7 +22,13 @@
 
 <mat-form-field>
   <mat-label>Client</mat-label>
-  <input matInput formControlName="client" />
+  <!-- <ng-container *ngIf="buses | async as busList"> -->
+    <mat-select formControlName="client">
+      <mat-option *ngFor="let client of clients | async" [value]="client">
+        {{client.name}} {{client.email}}
+      </mat-option>
+    </mat-select>
+ <!-- </ng-container> -->
 </mat-form-field>
 
 <p>

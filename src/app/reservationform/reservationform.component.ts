@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Reservation } from '../model/reservation';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReservationsService } from '../reservations.service';
+import { ReservationsService } from '../services/reservations.service';
 import { Router , ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Bus } from '../model/bus';
-import { BusService } from '../bus.service';
+import { BusService } from '../services/bus.service';
+import { Client } from '../model/client';
+import { ClientService } from '../services/client.service';
 
 @Component({
   selector: 'app-reservationform',
@@ -18,11 +20,12 @@ export class ReservationformComponent implements OnDestroy, OnInit{
 
   private subscriptions:Subscription[] = [];
 
-  buses?:Observable<Bus[]>;
+  allBuses?:Observable<Bus[]>;
+  clients?:Observable<Client[]>;
 
-  constructor(private reservationService: ReservationsService,private busService: BusService, private router: Router, private route: ActivatedRoute){
+  constructor(private reservationService: ReservationsService,private busService: BusService,private clientService: ClientService, private router: Router, private route: ActivatedRoute){
     this.reservationForm = new FormGroup({
-      bus: new FormControl('',[Validators.required]),
+      buses: new FormControl('',[Validators.required]),
       reservationDate: new FormControl('',[Validators.required]),
       client: new FormControl('',[Validators.required])
     })
@@ -33,18 +36,34 @@ export class ReservationformComponent implements OnDestroy, OnInit{
     if(id) {
     const subscription: Subscription = this.reservationService.getById(id).subscribe(
         {
-          next: (result: Reservation) => {this.reservationForm.patchValue(result)},
+          next: (result: Reservation) => {
+            console.log("result "+result.id),
+            this.reservationForm.patchValue(result)
+          },
           error: (error: Error) => { console.error(error) },
           complete: ()=>{ console.log('complete') }
         }
       );
       this.subscriptions.push(subscription);
     }
-    this.buses = this.busService.getAllBuses();
+    this.allBuses = this.busService.getAllBuses();
+    this.clients = this.clientService.getAllClients();
   }
 
   createOrUpdateReservation():void{
-    const subscription: Subscription = this.reservationService.create(this.reservationForm.value).subscribe(
+    console.log("id "+this.reservationForm.value.id);
+    console.log("bus "+this.reservationForm.value.buses);
+    console.log("client "+this.reservationForm.value.client);
+    console.log("date "+this.reservationForm.value.reservationDate);
+
+    const reservation: Reservation = {
+      id: this.reservationForm.value.id,
+      reservationDate: this.reservationForm.value.reservationDate,
+      client: this.reservationForm.value.client,
+      buses: Array.of(this.reservationForm.value.buses)
+    };
+
+    const subscription: Subscription = this.reservationService.create(reservation).subscribe(
       {
         next: (result: Reservation) => {this.router.navigateByUrl('/reservation-list');},
         error: (error: Error) => { console.error(error) },

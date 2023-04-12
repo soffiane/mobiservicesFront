@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Bus } from './model/bus';
+import { Bus } from '../model/bus';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class BusService {
 
-  apiUrl = 'http://localhost:8080/mobiservices/buses';
+  apiUrl = 'mobiservices/buses';
 
   constructor(private http:HttpClient) { }
 

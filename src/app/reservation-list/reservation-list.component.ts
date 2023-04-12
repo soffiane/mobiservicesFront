@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Reservation } from '../model/reservation';
-import { ReservationsService } from '../reservations.service';
+import { ReservationsService } from '../services/reservations.service';
 
 @Component({
   selector: 'app-reservation-list',
@@ -30,6 +30,7 @@ export class ReservationListComponent implements OnInit, OnDestroy{
   }
 
   delete(id: number):void {
+    console.log(id);
     const subscription:Subscription = this.reservationService.delete(id).subscribe(
       {
         //on reapelle le service de chargement de la liste des consumers apres la suppression
